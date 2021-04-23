@@ -4,7 +4,7 @@ import com.github.wpyuan.jwt.filter.JwtFilter;
 import com.github.wpyuan.jwt.handler.JwtAccessDeniedHandler;
 import com.github.wpyuan.jwt.handler.JwtAuthenticationEntryPoint;
 import com.github.wpyuan.jwt.security.service.DefaultUserDetailsService;
-import com.github.wpyuan.jwt.security.service.IHttpSecurityConfigure;
+import com.github.wpyuan.jwt.security.service.HttpSecurityConfigure;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     private final DefaultUserDetailsService defaultUserDetailsService;
     private final JwtFilter jwtFilter;
-    private final IHttpSecurityConfigure iHttpSecurityConfigure;
+    private final HttpSecurityConfigure httpSecurityConfigure;
 
     @Override
     protected UserDetailsService userDetailsService() {
@@ -45,7 +45,7 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 .accessDeniedHandler(new JwtAccessDeniedHandler());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        iHttpSecurityConfigure.configure(http);
+        httpSecurityConfigure.configure(http);
     }
 
     @Bean

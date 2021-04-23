@@ -7,13 +7,13 @@ import java.util.Collection;
 
 /**
  * <p>
- *     查询填充userDetail服务
+ *     userDetail帮助类，主要用来客制化填充user和权限
  * </p>
  *
  * @author wangpeiyuan
  * @date 2021/4/22 17:30
  */
-public interface IUserDetailsService {
+public interface UserDetailsFillService {
     /**
      * 获取用户
      * @param userName 用户名

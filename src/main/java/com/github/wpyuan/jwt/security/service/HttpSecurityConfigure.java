@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
  * @author wangpeiyuan
  * @date 2021/4/22 16:55
  */
-public interface IHttpSecurityConfigure {
+public interface HttpSecurityConfigure {
     /**
      * 扩展HttpSecurity配置
      *

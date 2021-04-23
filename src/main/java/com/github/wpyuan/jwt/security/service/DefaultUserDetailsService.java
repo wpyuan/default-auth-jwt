@@ -23,18 +23,18 @@ import java.util.Collection;
 @AllArgsConstructor
 public class DefaultUserDetailsService implements UserDetailsService {
 
-    private final IUserDetailsService iUserDetailsService;
+    private final UserDetailsFillService userDetailsFillService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        DefaultUser user = iUserDetailsService.getDefaultUser(username);
+        DefaultUser user = userDetailsFillService.getDefaultUser(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found:" + username);
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        iUserDetailsService.setAuthorities(authorities);
+        userDetailsFillService.setAuthorities(authorities);
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
     }
 }

@@ -1,6 +1,6 @@
 package com.github.wpyuan.jwt.security.service;
 
-import com.github.wpyuan.jwt.security.pojo.DefaultUser;
+import com.github.wpyuan.jwt.pojo.DefaultUser;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;

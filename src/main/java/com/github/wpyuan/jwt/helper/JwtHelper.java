@@ -18,7 +18,6 @@ import java.util.HashMap;
  * @author wangpeiyuan
  * @date 2021/4/22 8:45
  */
-@Component
 public class JwtHelper {
     @Value("${jwt.expiration:86400}")
     private Long expireTime;

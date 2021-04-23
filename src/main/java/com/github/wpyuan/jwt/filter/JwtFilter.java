@@ -27,11 +27,10 @@ import java.io.PrintWriter;
  * @author wangpeiyuan
  * @date 2021/4/22 8:43
  */
-@Component
 @AllArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtHelper jwtHelper;
-    private final DefaultUserDetailsService userDetailsService;
+    private final DefaultUserDetailsService defaultUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -41,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (!StringUtils.isEmpty(authorization) && authorization.startsWith(startStr)) {
                 String token = authorization.substring(startStr.length());
                 String username = jwtHelper.verity(token);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = defaultUserDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

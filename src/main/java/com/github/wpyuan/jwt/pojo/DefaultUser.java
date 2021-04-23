@@ -1,4 +1,4 @@
-package com.github.wpyuan.jwt.security.pojo;
+package com.github.wpyuan.jwt.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

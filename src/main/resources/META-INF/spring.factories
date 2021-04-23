@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.github.wpyuan.jwt.config.JwtAutoConfigurer,\
   com.github.wpyuan.jwt.security.config.DefaultWebSecurityConfigurerAdapter

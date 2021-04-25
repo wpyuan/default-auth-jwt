@@ -1,12 +1,17 @@
 package com.github.wpyuan.jwt.handler;
 
+import com.github.wpyuan.jwt.pojo.AuthFailResult;
+import com.github.wpyuan.jwt.util.ResponseWriteUtil;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Date;
 
 /**
  * <p>
@@ -20,12 +25,12 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException {
-        response.setStatus(401);
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        PrintWriter printWriter = response.getWriter();
-        String body = "无该资源访问权限";
-        printWriter.write(body);
-        printWriter.flush();
+        ResponseWriteUtil.write(response, HttpStatus.FORBIDDEN, MediaType.APPLICATION_JSON_VALUE, AuthFailResult.builder()
+                .timestamp(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"))
+                .status(HttpStatus.FORBIDDEN.value())
+                .error(HttpStatus.FORBIDDEN.getReasonPhrase())
+                .message("无该资源访问权限。")
+                .path(request.getRequestURI())
+                .build().toString());
     }
 }

@@ -1,5 +1,10 @@
 package com.github.wpyuan.jwt.handler;
 
+import com.github.wpyuan.jwt.pojo.AuthFailResult;
+import com.github.wpyuan.jwt.util.ResponseWriteUtil;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -8,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 /**
  * <p>
@@ -20,13 +26,13 @@ import java.io.PrintWriter;
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        response.setStatus(401);
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        PrintWriter printWriter = response.getWriter();
-        String body = e.getMessage();
-        printWriter.write(body);
-        printWriter.flush();
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+        ResponseWriteUtil.write(response, HttpStatus.UNAUTHORIZED, MediaType.APPLICATION_JSON_VALUE, AuthFailResult.builder()
+                .timestamp(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"))
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                .message(e.getMessage())
+                .path(request.getRequestURI())
+                .build().toString());
     }
 }

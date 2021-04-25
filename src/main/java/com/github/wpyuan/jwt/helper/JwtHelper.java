@@ -21,7 +21,7 @@ import java.util.HashMap;
  * @date 2021/4/22 8:45
  */
 public class JwtHelper {
-    @Value("${jwt.expiration:86400}")
+    @Value("${jwt.expiration:3000}")
     private Long expireTime;
 
     @Value("${jwt.secret:token_secret}")
@@ -42,7 +42,7 @@ public class JwtHelper {
         HashMap<String, Object> header = new HashMap<>(2);
         header.put("typ", "JWT");
         header.put("alg", "HS256");
-        return JWT.create().withHeader(header).withClaim("username", username).withExpiresAt(date).sign(algorithm);
+        return JWT.create().withHeader(header).withClaim("username", username).withClaim("canRefresh", canRefresh).withExpiresAt(date).sign(algorithm);
     }
 
     /**

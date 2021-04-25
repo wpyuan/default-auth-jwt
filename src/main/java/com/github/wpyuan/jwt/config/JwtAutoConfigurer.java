@@ -47,10 +47,4 @@ public class JwtAutoConfigurer {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    @ConditionalOnMissingBean(name = {"authorizeController"})
-    public AuthorizeController authorizeController() {
-        return new AuthorizeController(defaultUserDetailsService(), jwtHelper(), passwordEncoder());
-    }
 }

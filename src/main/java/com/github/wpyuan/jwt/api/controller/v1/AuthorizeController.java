@@ -38,6 +38,15 @@ public class AuthorizeController {
 
     @RequestMapping("/token")
     public ResponseEntity<?> token(HttpServletRequest request, @RequestBody DefaultUser user) {
+        if (StringUtils.isBlank(user.getUserName()) || StringUtils.isBlank(user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthFailResult.builder()
+                    .timestamp(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"))
+                    .status(HttpStatus.UNAUTHORIZED.value())
+                    .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                    .message("认证失败，请检查请求信息是否准确。")
+                    .path(request.getRequestURI())
+                    .build());
+        }
         UserDetails userDetails = defaultUserDetailsService.loadUserByUsername(user.getUserName());
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthFailResult.builder()

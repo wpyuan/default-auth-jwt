@@ -31,6 +31,7 @@ public class JwtHelper {
      * 获取jwt
      *
      * @param username 用户名
+     * @param canRefresh 是否可刷新
      * @return jwt
      */
     public String sign(String username, Boolean canRefresh) {

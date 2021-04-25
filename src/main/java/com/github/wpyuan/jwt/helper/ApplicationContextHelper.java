@@ -1,6 +1,7 @@
 package com.github.wpyuan.jwt.helper;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,10 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     }
 
     public static <T> T getBean(Class<T> c){
-        return applicationContext.getBean(c);
+        try {
+            return applicationContext.getBean(c);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
+        }
     }
 }

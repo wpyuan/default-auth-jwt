@@ -1,8 +1,9 @@
 package com.github.wpyuan.jwt.filter;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.github.wpyuan.jwt.handler.TokenExpiredHandler;
+import com.github.wpyuan.jwt.helper.ApplicationContextHelper;
 import com.github.wpyuan.jwt.helper.JwtHelper;
 import com.github.wpyuan.jwt.pojo.AuthFailResult;
 import com.github.wpyuan.jwt.security.service.DefaultUserDetailsService;
@@ -16,16 +17,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 
 /**
@@ -57,11 +55,10 @@ public class JwtFilter extends OncePerRequestFilter {
             String username = jwtHelper.getValue(token, "username", String.class);
             Boolean canRefresh = jwtHelper.getValue(token, "canRefresh", Boolean.class);
             if (canRefresh != null && canRefresh) {
-                Cookie cookie = new Cookie("openId", jwtHelper.sign(username, true));
-                cookie.setPath(StringUtils.defaultIfEmpty(request.getContextPath(), "/"));
-                cookie.setMaxAge(-1);
-                response.addCookie(cookie);
-
+                TokenExpiredHandler tokenExpiredHandler = ApplicationContextHelper.getBean(TokenExpiredHandler.class);
+                if (tokenExpiredHandler != null) {
+                    tokenExpiredHandler.handle(token, username, request, response);
+                }
                 this.pass(request, response, username);
                 chain.doFilter(request, response);
                 return;

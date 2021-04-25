@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * springboot applicationContext 操作帮助类
  * @author wpyuan
  */
-public class ApplicationContextHepler implements ApplicationContextAware {
+public class ApplicationContextHelper implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     @Override

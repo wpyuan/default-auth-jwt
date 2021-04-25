@@ -2,9 +2,10 @@ package com.github.wpyuan.jwt.config;
 
 import com.github.wpyuan.jwt.api.controller.v1.AuthorizeController;
 import com.github.wpyuan.jwt.filter.JwtFilter;
-import com.github.wpyuan.jwt.helper.ApplicationContextHepler;
+import com.github.wpyuan.jwt.helper.ApplicationContextHelper;
 import com.github.wpyuan.jwt.helper.JwtHelper;
 import com.github.wpyuan.jwt.security.service.DefaultUserDetailsService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,8 +27,9 @@ public class JwtAutoConfigurer {
     }
 
     @Bean
-    public ApplicationContextHepler applicationContextHepler() {
-        return new ApplicationContextHepler();
+    @ConditionalOnMissingBean(name = {"applicationContextHelper"})
+    public ApplicationContextHelper applicationContextHelper() {
+        return new ApplicationContextHelper();
     }
 
     @Bean
@@ -41,11 +43,13 @@ public class JwtAutoConfigurer {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = {"passwordEncoder"})
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = {"authorizeController"})
     public AuthorizeController authorizeController() {
         return new AuthorizeController(defaultUserDetailsService(), jwtHelper(), passwordEncoder());
     }

@@ -28,7 +28,7 @@ import java.util.Map;
  * @date 2021/4/25 15:26
  */
 @Controller
-@RequestMapping("/v1/authorize")
+@RequestMapping("/{sys}/v1/authorize")
 @AllArgsConstructor
 public class AuthorizeController {
     private final DefaultUserDetailsService defaultUserDetailsService;

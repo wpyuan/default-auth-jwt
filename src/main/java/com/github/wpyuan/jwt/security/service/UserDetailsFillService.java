@@ -23,8 +23,9 @@ public interface UserDetailsFillService {
 
     /**
      * 添加权限
+     * @param userName 用户名
      * @param authorities 权限集合
      */
-    void setAuthorities(Collection<SimpleGrantedAuthority> authorities);
+    void setAuthorities(String userName, Collection<SimpleGrantedAuthority> authorities);
 
 }

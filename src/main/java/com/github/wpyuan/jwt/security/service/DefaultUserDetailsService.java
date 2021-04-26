@@ -30,7 +30,7 @@ public class DefaultUserDetailsService implements UserDetailsService {
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        userDetailsFillService.setAuthorities(authorities);
+        userDetailsFillService.setAuthorities(username, authorities);
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
     }
 }

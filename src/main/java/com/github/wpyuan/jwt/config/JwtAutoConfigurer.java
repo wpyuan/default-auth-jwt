@@ -1,6 +1,5 @@
 package com.github.wpyuan.jwt.config;
 
-import com.github.wpyuan.jwt.api.controller.v1.AuthorizeController;
 import com.github.wpyuan.jwt.filter.JwtFilter;
 import com.github.wpyuan.jwt.helper.ApplicationContextHelper;
 import com.github.wpyuan.jwt.helper.JwtHelper;

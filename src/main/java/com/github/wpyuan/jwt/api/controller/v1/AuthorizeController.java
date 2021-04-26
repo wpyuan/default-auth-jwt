@@ -7,7 +7,6 @@ import com.github.wpyuan.jwt.security.service.DefaultUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,36 +38,25 @@ public class AuthorizeController {
     @RequestMapping("/token")
     public ResponseEntity<?> token(HttpServletRequest request, @RequestBody DefaultUser user) {
         if (StringUtils.isBlank(user.getUserName()) || StringUtils.isBlank(user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthFailResult.builder()
-                    .timestamp(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"))
-                    .status(HttpStatus.UNAUTHORIZED.value())
-                    .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
-                    .message("认证失败，请检查请求信息是否准确。")
-                    .path(request.getRequestURI())
-                    .build());
+            return this.error(request);
         }
         UserDetails userDetails = defaultUserDetailsService.loadUserByUsername(user.getUserName());
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthFailResult.builder()
-                    .timestamp(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"))
-                    .status(HttpStatus.UNAUTHORIZED.value())
-                    .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
-                    .message("认证失败，请检查请求信息是否准确。")
-                    .path(request.getRequestURI())
-                    .build());
+        if (userDetails == null || !passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
+            return this.error(request);
         }
 
-        if (!passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthFailResult.builder()
-                    .timestamp(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"))
-                    .status(HttpStatus.UNAUTHORIZED.value())
-                    .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
-                    .message("认证失败，请检查请求信息是否准确。")
-                    .path(request.getRequestURI())
-                    .build());
-        }
         Map<String, Object> result = new HashMap<>(1);
         result.put("token", jwtHelper.sign(user.getUserName(), false));
         return ResponseEntity.ok(result);
+    }
+
+    private ResponseEntity<?> error(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthFailResult.builder()
+                .timestamp(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"))
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                .message("认证失败，请检查请求信息是否准确。")
+                .path(request.getRequestURI())
+                .build());
     }
 }

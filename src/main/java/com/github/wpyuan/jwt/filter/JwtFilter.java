@@ -1,6 +1,7 @@
 package com.github.wpyuan.jwt.filter;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.github.wpyuan.jwt.handler.TokenExpiredHandler;
 import com.github.wpyuan.jwt.helper.ApplicationContextHelper;
@@ -72,7 +73,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     .message(e.getMessage())
                     .path(request.getRequestURI())
                     .build().toString());
-        } catch (JWTDecodeException e) {
+        } catch (JWTDecodeException | SignatureVerificationException e) {
             SecurityContextHolder.clearContext();
             ResponseWriteUtil.write(response, HttpStatus.UNAUTHORIZED, MediaType.APPLICATION_JSON_VALUE, AuthFailResult.builder()
                     .timestamp(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"))

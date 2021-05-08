@@ -20,6 +20,16 @@ import java.util.Collection;
  */
 public class DefaultUserDetailsService implements UserDetailsService {
 
+    /**
+     * 处理请求认证的用户信息
+     * @param user 请求认证的用户
+     * @return 处理后的用户信息
+     */
+    public DefaultUser handleAuthUserInfo(DefaultUser user) {
+        UserDetailsFillService userDetailsFillService = ApplicationContextHelper.getBean(UserDetailsFillService.class);
+        return userDetailsFillService.handleAuthUserInfo(user);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetailsFillService userDetailsFillService = ApplicationContextHelper.getBean(UserDetailsFillService.class);

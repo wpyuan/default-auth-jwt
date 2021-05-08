@@ -14,6 +14,16 @@ import java.util.Collection;
  * @date 2021/4/22 17:30
  */
 public interface UserDetailsFillService {
+
+    /**
+     * 处理请求认证的用户信息
+     * @param user 请求认证的用户
+     * @return 处理后的用户信息
+     */
+    default DefaultUser handleAuthUserInfo(DefaultUser user) {
+        return user;
+    }
+
     /**
      * 获取用户
      * @param userName 用户名

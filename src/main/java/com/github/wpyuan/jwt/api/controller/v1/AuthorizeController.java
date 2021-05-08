@@ -40,6 +40,10 @@ public class AuthorizeController {
         if (StringUtils.isBlank(user.getUserName()) || StringUtils.isBlank(user.getPassword())) {
             return this.error(request);
         }
+        user = defaultUserDetailsService.handleAuthUserInfo(user);
+        if (user == null) {
+            return this.error(request);
+        }
         UserDetails userDetails = defaultUserDetailsService.loadUserByUsername(user.getUserName());
         if (userDetails == null || !passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
             return this.error(request);

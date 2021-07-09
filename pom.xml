@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.github.wpyuan</groupId>
     <artifactId>default-auth-jwt</artifactId>
-    <version>0.1.7</version>
+    <version>0.1.8</version>
     <name>jwt</name>
     <description>jwt project for Spring Boot</description>
     <properties>

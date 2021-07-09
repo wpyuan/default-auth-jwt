@@ -25,8 +25,8 @@ public class JwtAutoConfigurer {
         return new JwtHelper();
     }
 
-    @Bean
-    @ConditionalOnMissingBean(name = {"applicationContextHelper"})
+    @Bean("jwtApplicationContextHelper")
+    @ConditionalOnMissingBean(name = {"jwtApplicationContextHelper"})
     public ApplicationContextHelper applicationContextHelper() {
         return new ApplicationContextHelper();
     }

@@ -3,6 +3,7 @@ package com.github.wpyuan.jwt.filter;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.github.wpyuan.jwt.handler.JwtAuthenticationSuccessHandler;
 import com.github.wpyuan.jwt.handler.TokenExpiredHandler;
 import com.github.wpyuan.jwt.helper.ApplicationContextHelper;
 import com.github.wpyuan.jwt.helper.JwtHelper;
@@ -90,5 +91,10 @@ public class JwtFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        // add customise
+        JwtAuthenticationSuccessHandler tokenExpiredHandler = ApplicationContextHelper.getBean(JwtAuthenticationSuccessHandler.class);
+        if (tokenExpiredHandler != null) {
+            tokenExpiredHandler.handle(request, response, username);
+        }
     }
 }

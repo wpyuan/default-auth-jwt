@@ -1,6 +1,7 @@
 package com.github.wpyuan.jwt.security.service;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 
 /**
  * <p>
@@ -13,8 +14,18 @@ public interface HttpSecurityConfigure {
     /**
      * 扩展HttpSecurity配置
      *
-     * @param httpSecurity
+     * @param httpSecurity HttpSecurity
      * @throws Exception
      */
     void configure(HttpSecurity httpSecurity) throws Exception;
+
+    /**
+     * 扩展WebSecurity配置
+     *
+     * @param webSecurity WebSecurity
+     * @throws Exception
+     */
+    default void configure(WebSecurity webSecurity) throws Exception {
+
+    }
 }

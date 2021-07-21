@@ -1,6 +1,5 @@
 package com.github.wpyuan.jwt.config;
 
-import com.github.wpyuan.jwt.filter.JwtFilter;
 import com.github.wpyuan.jwt.helper.ApplicationContextHelper;
 import com.github.wpyuan.jwt.helper.JwtHelper;
 import com.github.wpyuan.jwt.security.service.DefaultUserDetailsService;
@@ -34,11 +33,6 @@ public class JwtAutoConfigurer {
     @Bean
     public DefaultUserDetailsService defaultUserDetailsService() {
         return new DefaultUserDetailsService();
-    }
-
-    @Bean
-    public JwtFilter jwtFilter() {
-        return new JwtFilter(jwtHelper(), defaultUserDetailsService());
     }
 
     @Bean
